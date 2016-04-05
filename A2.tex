@@ -1,0 +1,180 @@
+\documentclass{report}
+
+%********************************************
+%Packages
+%********************************************
+
+
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{algpseudocode}
+\usepackage{algorithmicx}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{indentfirst}
+\usepackage{soul}
+\usepackage{mathtools}
+\usepackage{subfigure}
+\usepackage[makeroom]{cancel}
+\usepackage{tikz}
+\usepackage{qtree}
+\usepackage[letterpaper, margin=1in]{geometry}
+
+%********************************
+%Package Libraries
+%********************************
+\usetikzlibrary{matrix}
+\usetikzlibrary{arrows}
+%********************************
+%New Commands
+%********************************
+\newcommand{\colvec}[2][.8]{%
+  \scalebox{#1}{%
+    \renewcommand{\arraystretch}{.8}%
+    $\begin{bmatrix}#2\end{bmatrix}$%
+  }
+}
+
+\newcommand{\dc}{$D \text{ \& } C  $}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+%********************************
+%Document Start
+%********************************
+
+\begin{document}
+	\rhead{\today}
+	\title{Machine Learning}
+	\author{Jorell Linsangan - 767816 - linsangj@myumanitoba.ca}
+	\maketitle
+	\newpage
+%********************************
+%Body
+%********************************
+
+	
+	\rhead{\today}
+	\pagestyle{fancyplain}
+
+	\begin{enumerate}
+		\item Bitmap indexes
+		\begin{enumerate}
+			\item Create a bitmap for each value of Boolean attribute ``evenNum''. \\ 
+			\begin{center}
+				\begin{tabular} {|c|c|}
+					\hline
+					$BV(evenNum = Y)$ & $BV(evenNum = N)$ \\ \hline
+					1 & 0 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+				\end{tabular}	
+			\end{center}
+			\item Create a bitmap vector for each numeric attribute ``numDigits'' \\
+				\begin{center}
+				\begin{tabular} {|c|c|}
+					\hline
+					$BV(numDigits = 1)$ & $BV(numDigits = 2)$ \\ \hline
+					1 & 0 \\ \hline
+					1 & 0 \\ \hline
+					1 & 0 \\ \hline
+					1 & 0 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+				\end{tabular}	
+			\end{center}
+			\item Create a bitmap vector for each Boolean attribute ``endsWith3'' \\
+				\begin{center}
+				\begin{tabular} {|c|c|}
+					\hline
+					$BV(endsWith3 = Y)$ & $BV(endsWith3 = N)$ \\ \hline
+					0 & 1 \\ \hline
+					1 & 0 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					1 & 0 \\ \hline
+					0 & 1 \\ \hline
+					0 & 1 \\ \hline
+					1 & 0 \\ \hline
+					0 & 1 \\ \hline
+				\end{tabular}	
+			\end{center}
+			\item Find the rIDs of all the records with 2-digit values that end with 3.
+			\begin{center}
+				\begin{align*}
+					BV(numDigits=2) &= 0000111111 \\
+					BV(endWith3 =Y ) &= 0100010010 \\
+					BV(Result) &= 0000010010
+				\end{align*}
+			\end{center}
+			Which means that the rids of records with 2-digit values that end with 3 are $6$ \& $9$.
+		\end{enumerate}
+		\newpage
+		\item I/O Cost
+		\begin{enumerate}
+			\item 2-way external mergesort.
+			\begin{align*}
+				Cost &= 2(N)(1 + \lceil\log_2(N)\rceil) \\
+				&= 2(200)(1 + \lceil\log_2(200)\rceil)\\
+				&= 400(1 +\lceil\log_2(200)\rceil) \\
+				&= 400 + 3200 \\
+				\text{Total Cost} &= 3600 \text{ I/Os}
+			\end{align*}
+			\item General multi-way external mergesort with B = 15
+			\begin{align*}
+				Cost &= 2(N)(1 + \lceil\log_{B-1}(\lceil\dfrac{N}{B}\rceil)\rceil) \\
+				&= 2(200)(1 + \lceil\log_{14}(\lceil\dfrac{200}{15}\rceil)\rceil) \\
+				&= 400(2) \\
+				\text{Total Cost} &= 800 \text{ I/Os}
+			\end{align*}
+		\end{enumerate}
+		\item Something...Not sure what to name this question. Query Processing?
+		If there are $2000$ tuples that are sorted in ascending order and a page can hold 10 student tuples. $P_r = 200$.
+		\begin{enumerate}
+			\item Binary Search. I am assuming that sID is the primary key, therefor it is unique.
+			\begin{align*}
+				\text{Cost to locate tuple} &= \lceil \log_2(200) \rceil \\
+				&= 8 \text{ I/Os}
+			\end{align*}
+
+			\item $3$ I/Os
+			\item $4$ I/Os
+		\end{enumerate}
+		\item 
+		\begin{enumerate}
+			\item Root to leaf traversal is $3$. There are 200 pages and there are 2000 tuples where 2\% of those are `G. Raymond'. So $3 + (.02)200 = 7$ I/Os for clustered index.
+			\item For non-clustered, it is $3 + (0.2)2000 = 403$ I/Os.
+		\end{enumerate}
+		\item 
+		\begin{enumerate}
+			\item We create a tuple of only the wanted attribute/s which is `sName'. Let this tuple be tuple T. Since size(sName) == size(sID), we can assume that we can fit 20 student tuples in a page now. So $P_t = 2000/20 = 100$ and $P_r = 2000/10 = 200$. The formula for cost is:
+			\begin{align*}
+				&P_R + P_T + ( 2(P_T) \lceil(\log_{B-1} \lceil\dfrac{P_T}{B}\rceil)\rceil - 1) + P_T \\
+				&200 + 100 + ( 2(100) \lceil(\log_{20} \lceil\dfrac{100}{21}\rceil)\rceil -1 ) + 100 = 400 \\
+			\end{align*}
+			\item $P_R + 2 P_T$ is the formula to get the number of I/Os for hash based projection. $P_R = 200$ and depending if I should assume that size(sName) == size(sID). $P_T$ will have different values. $P_T = 100$ if I make the assumption or $P_T = 200$ if no assumption. \\
+
+			Answer with assumption: $200+ (2)(100) = 400$ \\
+			Answer without assumption $200 + (2)(200) = 600$
+		\end{enumerate}
+		\newpage
+		\item $P_S = 200$, $P_R = 800$
+		\begin{enumerate}
+			\item Inner: Enrolled, Outer: Student. Cost: $P_S + N_S * P_R = 200 + 2000(800) = 1600200$.
+			\item Inner: Student, Outer: Enrolled. Cost: $P_R + N_R * P_S = 800 + 8000(200) = 1600800$.
+			\item 
+		\end{enumerate}
+	\end{enumerate}
+\end{document}
