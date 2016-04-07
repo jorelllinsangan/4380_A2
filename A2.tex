@@ -155,16 +155,16 @@
 		\item 
 		\begin{enumerate}
 			\item Root to leaf traversal is $3$. There are 200 pages and there are 2000 tuples where 2\% of those are `G. Raymond'. So $3 + (.02)200 = 7$ I/Os for clustered index.
-			\item For non-clustered, it is $3 + (0.2)2000 = 403$ I/Os.
+			\item For non-clustered, it is $3 + (0.02)2000 = 43$ I/Os.
 		\end{enumerate}
 		\item 
 		\begin{enumerate}
 			\item We create a tuple of only the wanted attribute/s which is `sName'. Let this tuple be tuple T. Since size(sName) == size(sID), we can assume that we can fit 20 student tuples in a page now. So $P_t = 2000/20 = 100$ and $P_E = 2000/10 = 200$. The formula for cost is:
 			\begin{align*}
-				&P_r + P_T + ( 2(P_T) \lceil(\log_{B-1} \lceil\dfrac{P_T}{B}\rceil)\rceil - 1) + P_T \\
+				&P_E + P_T + ( 2(P_T) \lceil(\log_{B-1} \lceil\dfrac{P_T}{B}\rceil)\rceil - 1) + P_T \\
 				&200 + 100 + ( 2(100) \lceil(\log_{20} \lceil\dfrac{100}{21}\rceil)\rceil -1 ) + 100 = 400 \\
 			\end{align*}
-			\item $P_r + 2 P_T$ is the formula to get the number of I/Os for hash based projection. $P_r = 200$ and depending if I should assume that size(sName) == size(sID). $P_T$ will have different values. $P_T = 100$ if I make the assumption or $P_T = 200$ if no assumption. \\
+			\item $P_E + 2 P_T$ is the formula to get the number of I/Os for hash based projection. $P_E = 200$ and depending if I should assume that size(sName) == size(sID). $P_T$ will have different values. $P_T = 100$ if I make the assumption or $P_T = 200$ if no assumption. \\
 
 			Answer with assumption: $200+ (2)(100) = 400$ \\
 			Answer without assumption $200 + (2)(200) = 600$
@@ -185,6 +185,82 @@
 			Cost for sorting enrolled is $2(800) * (1 + \lceil\log_{20} \lceil \dfrac{800}{21}\rceil\rceil) = 4800$ \\
 			The cost for the merging phase is $P_E + P_S = 800 + 200 = 1000$. \\
 			Cost for Sort-merge join is $4800 + 1000 = 5800$.
+		\end{enumerate}
+
+		\item Schedules
+		\begin{enumerate}
+			\item Schedule 1:
+			\begin{enumerate}
+				\item Yes
+				\item Yes \\
+				\begin{tabular}{c c} \\
+				T1 & T2 \\
+				\hline 
+				R(A) & \\
+				W(A) & \\ 
+				R(B) & \\ 
+				W(B) & \\
+ 					 & R(A) \\
+ 					 & W(A)
+				\end{tabular}
+				\item Yes \\
+				\begin{tabular}{c c} \\
+				T1 & T2 \\
+				\hline 
+				R(A) & \\
+				W(A) & \\ 
+				R(B) & \\ 
+				W(B) & \\
+ 					 & R(A) \\
+ 					 & W(A)
+				\end{tabular}
+			\end{enumerate}
+			\item Schedule 2:
+			\begin{enumerate}
+				\item No
+				\item Yes\\
+				\begin{tabular}{c c} \\
+				T1 & T2 \\
+				\hline 
+				& R(C) \\
+				& W(C) \\
+				& R(D) \\ 
+				& W(D)\\ 
+				R(C) & \\ 
+				W(C) & \\
+				\end{tabular}
+				\item Yes \\
+				\begin{tabular}{c c} \\
+				T1 & T2 \\
+				\hline 
+				& R(C) \\
+				& W(C) \\
+				& R(D) \\ 
+				& W(D)\\ 
+				R(C) & \\ 
+				W(C) & \\
+				\end{tabular}
+			\end{enumerate}
+			\item Schedule 3:
+			\begin{enumerate}
+				\item No
+				\item No
+				\item Yes \\
+				\begin{tabular}{c c} \\
+				T1 & T2 \\
+				\hline 
+				R(E)& \\
+				W(E)& \\ 
+				& W(E)) \\
+				& W(E)\\
+				\end{tabular}
+			\end{enumerate}
+			\item Schedule 4:
+			\begin{enumerate}
+				\item No
+				\item No
+				\item No
+			\end{enumerate}
 		\end{enumerate}
 	\end{enumerate}
 \end{document}
