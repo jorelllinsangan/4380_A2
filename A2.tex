@@ -155,7 +155,7 @@
 		\item 
 		\begin{enumerate}
 			\item Root to leaf traversal is $3$. There are 200 pages and there are 2000 tuples where 2\% of those are `G. Raymond'. So $3 + (.02)200 = 7$ I/Os for clustered index.
-			\item For non-clustered, it is $3 + (0.02)2000 = 43$ I/Os.
+			\item For non-clustered, it is $3 + (0.02)2000 = 43$ I/Os. *
 		\end{enumerate}
 		\item 
 		\begin{enumerate}
@@ -220,7 +220,7 @@
 				\item No
 				\item Yes\\
 				\begin{tabular}{c c} \\
-				T1 & T2 \\
+				T3 & T4 \\
 				\hline 
 				& R(C) \\
 				& W(C) \\
@@ -231,7 +231,7 @@
 				\end{tabular}
 				\item Yes \\
 				\begin{tabular}{c c} \\
-				T1 & T2 \\
+				T3 & T4 \\
 				\hline 
 				& R(C) \\
 				& W(C) \\
@@ -247,7 +247,7 @@
 				\item No
 				\item Yes \\
 				\begin{tabular}{c c} \\
-				T1 & T2 \\
+				T5 & T6 \\
 				\hline 
 				R(E)& \\
 				W(E)& \\ 
